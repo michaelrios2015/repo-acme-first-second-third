@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html>
     <head>
-<style>
+    <style>
+        body {
 
-body {
+            max-width: 1200px;
+            margin: auto;
+        }
 
-    max-width: 1200px;
-    margin: auto;
-}
+        #lists{
+            display: flex;
+            
+        }
 
-#lists{
-    display: flex;
-}
+        div div{
+            
+            height: 600px;
+            background-color: yellow;
+            border-style: solid;
+            flex: 0 0 33%;
+            display: flex;
+            flex-direction: column;
+            margin: 1px;
+        }
 
-div div{
-    
-    height: 400px;
-    /* width: 100px; */
-    background-color: yellow;
-    border-style: solid;
-    flex: 0 0 33%;
-}
+        .red {
+            background-color: red;
+        }
 
-.red {
-    background-color: red;
-}
+        h1{
 
-h1{
+            text-align: center;
+        } 
 
-    text-align: center;
-} 
-
-
-</style>
+        p{
+            border-style: solid;
+            font-size: 1.5rem;
+            
+        }
+    </style>
 
 </head>
 <body>
@@ -41,27 +47,24 @@ h1{
 <!-- the less that is hard coded probably the better but going to start like this -->
         <div id='first'>
             <!-- should probably be another main div here  -->
-            <button id="buttonOneLeft">Left</button>
-            <button id="buttonOneRight">Right</button>
+            <button id="buttonOneLeft">< Left</button>
+            <button id="buttonOneRight">Right ></button>
             <h1>FIRST</h1>
         </div>
         <div id='second'>
             <!-- should probably be another main div here  -->
-            <button id="buttonTwoLeft">Left</button>
-            <button id="buttonTwoRight">Right</button>
+            <button id="buttonTwoLeft">< Left</button>
+            <button id="buttonTwoRight">Right ></button>
             
             <h1>SECOND</h1>
         </div>   
         <div id='third'>
-            <button id="buttonThreeLeft">Left</button>
-            <button id="buttonThreeRight">Right</button>
+            <button id="buttonThreeLeft">< Left</button>
+            <button id="buttonThreeRight">Right ></button>
             <h1>THIRD</h1>
         </div>
     </div>
 
-<div id='boxOne'></div>
-<div id='boxTwo'></div>
-<div id='boxThree'></div>
 
 <script>
 
@@ -89,7 +92,7 @@ const second = document.getElementById('second');
 const third = document.getElementById('third');
 //console.log(third);
 
-const buttonTwo = document.getElementById('buttonTwo');
+// const buttonTwo = document.getElementById('buttonTwo');
 
 
 //adds the name to each box based on box id
@@ -119,9 +122,9 @@ function addNames(users){
         }
         
     });
-
 }
 
+//wipes the boxes clean when we move the names
 function removeNames() {
 
 const pTags = list.getElementsByTagName('P');
@@ -133,18 +136,18 @@ const pTags = list.getElementsByTagName('P');
 addNames(users);
 
 //time to start picking names when clicked so a function with eventlister when clicked
-
-
 //so this lets me highlight names will probbaly need to put them in 
 //an array and then loop through the array to move them which will also need a new button
 
-list.addEventListener('click', (event) => {
 
+//just need one listener 
+list.addEventListener('click', (event) => {
 
     //console.log(event.target)
     const target = event.target;
 
-    //console.log(target.tagName);
+    //this deals selecting and selecting names
+    //console.log(target.tagName);// toggle might help me get rid of an if statement 
     if (target.tagName === 'P' && !target.className){
         target.className = 'red';
         //check array to see name has selected tag
@@ -165,107 +168,86 @@ list.addEventListener('click', (event) => {
         }})
 
     }
+    //this deals with the buttons if the slots used numbers could probably shave down the code 
+    else if (target.tagName === 'BUTTON'){
+           
+        console.log(target.getAttribute('id'));
 
+        if ('buttonOneLeft' === target.getAttribute('id')){
+        //need to go through each user 
+            users.forEach(function(element) {
+            //console.log(element['name']);
+            //i assume this can be made inot it's own function but not entirely sure how        
+            //if the user was selected and are in the first slot
+            if (element['selected']  && element['slot'] === 'first'){
+                //move them to the third
+                element['slot'] = 'third';
+                //earse all the names
+                removeNames();
+                //add them back
+                addNames(users);
+    
+            }
+       
+            }); 
+        }    
+
+        if ('buttonOneRight' === target.getAttribute('id')){
+            users.forEach(function(element) {
+                console.log(element['name']);    
+                if (element['selected']  && element['slot'] === 'first'){
+                    element['slot'] = 'second';
+                    removeNames();
+                    addNames(users);
+                }
+            }); 
+        }
+
+        if ('buttonTwoRight' === target.getAttribute('id')){
+            users.forEach(function(element) {
+                console.log(element['name']);    
+                if (element['selected']  && element['slot'] === 'second'){
+                    element['slot'] = 'third';
+                    removeNames();
+                    addNames(users);
+                }
+            }); 
+        }
+
+        if ('buttonTwoLeft' === target.getAttribute('id')){
+            users.forEach(function(element) {
+                console.log(element['name']);    
+                if (element['selected']  && element['slot'] === 'second'){
+                    element['slot'] = 'first';
+                    removeNames();
+                    addNames(users);
+                }
+            }); 
+        }
+
+        if ('buttonThreeRight' === target.getAttribute('id')){
+            users.forEach(function(element) {
+                console.log(element['name']);    
+                if (element['selected']  && element['slot'] === 'third'){
+                    element['slot'] = 'first';
+                    removeNames();
+                    addNames(users);
+                }
+           }); 
+        }
+       
+        if ('buttonThreeLeft' === target.getAttribute('id')){
+            users.forEach(function(element) {
+                console.log(element['name']);    
+                if (element['selected']  && element['slot'] === 'third'){
+                    element['slot'] = 'second';
+                    removeNames();
+                    addNames(users);
+                }
+            }); 
+        }
+    }    
 });
-
-
-//things are now pushed into an array so now need a way to move them 
-//add a move button?? I guess so maybe just one moves everything to the right or some such
-//honestly it's not quite clear and probably does not matter  
-
-
-
-//this works much better than i expected. I mean it's brute force but I can hand it in 
-//should be gone through to make it less crazy also does not work perfectly 
-// . probably better if the listener was one step above so less repeated code
-//but not a big deal can just be repeated for four more buttons  
-
-buttonOneRight.addEventListener("click", function(event){
-    console.log('button two here!!')
-
-    users.forEach(function(element) {
-        //console.log(element['name']);
-        if (element['selected'] && element['slot'] === 'first'){
-            element['slot'] = 'second';
-            // console.log(element['name'])
-            // console.log(element['slot'])
-            // console.log(users);
-            removeNames();
-            addNames(users);
-            }
-        });
-
-
-} )
-
-buttonOneLeft.addEventListener("click", function(event){
-    console.log('button two here!!')
-
-    users.forEach(function(element) {
-        //console.log(element['name']);
-        if (element['selected']  && element['slot'] === 'first'){
-            element['slot'] = 'third';
-            removeNames();
-            addNames(users);
-            //chosenNames = [];
-
-      
-            }
-        });
-
-
-} )
-
-
-buttonTwoRight.addEventListener("click", function(event){
-    console.log('button two here!!')
-
-    users.forEach(function(element) {
-        if (element['selected']  && element['slot'] === 'second'){
-            element['slot'] = 'third';
-            removeNames();
-            addNames(users);
-            }
-        });
-
-} )
-
-buttonTwoLeft.addEventListener("click", function(event){
-    console.log('button two here!!')
-
-    users.forEach(function(element) {
-        if (element['selected']  && element['slot'] === 'second'){
-            element['slot'] = 'first';
-            removeNames();
-            addNames(users);
-            }
-        });
-} )
-
-buttonThreeRight.addEventListener("click", function(event){
-    users.forEach(function(element) {
-        if (element['selected']  && element['slot'] === 'third'){
-            element['slot'] = 'first';
-            removeNames();
-            addNames(users);
-            }
-        });
-} )
-
-buttonThreeLeft.addEventListener("click", function(event){
-    users.forEach(function(element) {
-        if (element['selected']  && element['slot'] === 'third'){
-            element['slot'] = 'second';
-            removeNames();
-            addNames(users);
-            }
-        });
-
-
-} )
-
-
-//
 
 </script>
 
