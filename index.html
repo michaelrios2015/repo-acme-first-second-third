@@ -34,7 +34,7 @@ h1{
 
 </style>
 
-    </head>
+</head>
 <body>
     <h1>Acme First, Second, Third</h1>
     <div id='lists'>
@@ -97,34 +97,26 @@ function addNames(users){
 
     users.forEach(element => {
 
-//there is definately a better way of doing this but this works 
+    //there is definately a better way of doing this but this works 
 
-const name = document.createElement('p');
-            name.innerText = element['name'];
+    const name = document.createElement('p');
+    name.innerText = element['name'];
 
         if (element['slot'] === 'first'){
             first.appendChild(name); 
-            //console.log("yes!!")
         }
         
         if (element['slot'] === 'second'){
-            // const name = document.createElement('p');
-            // name.innerText = element['name'];
             second.appendChild(name); 
-            //console.log("yes!!")
         }
 
         if (element['slot'] === 'third'){
-            // const name = document.createElement('p');
-            // name.innerText = element['name'];
             third.appendChild(name); 
-            //console.log("yes!!")
         }
-
+    
         if(element['selected']){
             name.className = 'red';
         }
-        //console.log(element['slot']);
         
     });
 
@@ -146,7 +138,6 @@ addNames(users);
 //so this lets me highlight names will probbaly need to put them in 
 //an array and then loop through the array to move them which will also need a new button
 
-const chosenNames = [];
 list.addEventListener('click', (event) => {
 
 
@@ -156,20 +147,16 @@ list.addEventListener('click', (event) => {
     //console.log(target.tagName);
     if (target.tagName === 'P' && !target.className){
         target.className = 'red';
-        //console.log(target.innerText);
-        chosenNames.push(target.innerText);
-        console.log(chosenNames);
         //check array to see name has selected tag
         users.forEach(function(element) {if (element['name'] === target.innerText)
         {
             element['selected'] = !element['selected']
-            console.log(users);
+            //console.log(users);
         }})
     
     } else if (target.tagName === 'P' && target.className){
         target.className = '';
-        chosenNames.splice(chosenNames.indexOf(target.innerText), 1);
-        console.log(chosenNames);
+        
         users.forEach(function(element) {if (element['name'] === target.innerText)
         {
             element['selected'] = !element['selected']
@@ -178,8 +165,6 @@ list.addEventListener('click', (event) => {
 
     }
 
-    //pickedColor  = event.target.value;
-    // color.textContent = `You like ${event.target.value}`;
 });
 
 
@@ -201,12 +186,11 @@ buttonOneRight.addEventListener("click", function(event){
         //console.log(element['name']);
         if (element['selected'] && element['slot'] === 'first'){
             element['slot'] = 'second';
-            console.log(element['name'])
-            console.log(element['slot'])
-            console.log(users);
+            // console.log(element['name'])
+            // console.log(element['slot'])
+            // console.log(users);
             removeNames();
             addNames(users);
-            //chosenNames = [];
             }
         });
 
@@ -232,25 +216,16 @@ buttonOneLeft.addEventListener("click", function(event){
 } )
 
 
-
-
-
 buttonTwoRight.addEventListener("click", function(event){
     console.log('button two here!!')
 
     users.forEach(function(element) {
-        //console.log(element['name']);
         if (element['selected']  && element['slot'] === 'second'){
             element['slot'] = 'third';
-            console.log(element['name'])
-            console.log(element['slot'])
-            console.log(users);
             removeNames();
             addNames(users);
-            //chosenNames = [];
             }
         });
-
 
 } )
 
@@ -258,26 +233,20 @@ buttonTwoLeft.addEventListener("click", function(event){
     console.log('button two here!!')
 
     users.forEach(function(element) {
-        //console.log(element['name']);
         if (element['selected']  && element['slot'] === 'second'){
             element['slot'] = 'first';
             removeNames();
             addNames(users);
-            //chosenNames = [];
             }
         });
-
-
 } )
 
 buttonThreeRight.addEventListener("click", function(event){
     users.forEach(function(element) {
-        //console.log(element['name']);
         if (element['selected']  && element['slot'] === 'third'){
             element['slot'] = 'first';
             removeNames();
             addNames(users);
-            //chosenNames = [];
             }
         });
 } )
@@ -288,15 +257,11 @@ buttonThreeLeft.addEventListener("click", function(event){
             element['slot'] = 'second';
             removeNames();
             addNames(users);
-            //chosenNames = [];
             }
         });
 
 
 } )
-
-
-
 
 
 </script>
