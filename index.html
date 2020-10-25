@@ -27,13 +27,21 @@ div div{
     <div id='lists'>
 <!-- the less that is hard coded probably the better but going to start like this -->
         <div id='first'>
-
+            <!-- should probably be another main div here  -->
+            <button id="buttonOneLeft">Left</button>
+            <button id="buttonOneRight">Right</button>
             <h1>FIRST</h1>
         </div>
         <div id='second'>
+            <!-- should probably be another main div here  -->
+            <button id="buttonTwoLeft">Left</button>
+            <button id="buttonTwoRight">Right</button>
+            
             <h1>SECOND</h1>
         </div>   
         <div id='third'>
+            <button id="buttonThreeLeft">Left</button>
+            <button id="buttonThreeRight">Right</button>
             <h1>THIRD</h1>
         </div>
     </div>
@@ -56,7 +64,7 @@ div div{
 
 //seems like I should use this but not entirely sure how yet 
 const list = document.getElementById('lists');
-console.log(list);
+//console.log(list);
 
 //getting the boxes
 const first = document.getElementById('first');
@@ -68,15 +76,16 @@ const second = document.getElementById('second');
 const third = document.getElementById('third');
 //console.log(third);
 
+const buttonTwo = document.getElementById('buttonTwo');
+
 
 //adds the name to each box based on box id
 function addNames(users){
-    
+
     users.forEach(element => {
 
 //there is definately a better way of doing this but this works 
         if (element['slot'] === 'first'){
-            
             const name = document.createElement('p');
             name.innerText = element['name'];
             first.appendChild(name); 
@@ -84,7 +93,6 @@ function addNames(users){
         }
         
         if (element['slot'] === 'second'){
-            
             const name = document.createElement('p');
             name.innerText = element['name'];
             second.appendChild(name); 
@@ -92,17 +100,22 @@ function addNames(users){
         }
 
         if (element['slot'] === 'third'){
-            
             const name = document.createElement('p');
             name.innerText = element['name'];
             third.appendChild(name); 
             //console.log("yes!!")
         }
 
-        console.log(element['slot']);
+        //console.log(element['slot']);
         
     });
 
+}
+
+function removeNames() {
+const pTags = list.getElementsByTagName('P');
+    console.log([...pTags]);
+            [...pTags].forEach(element =>element.remove());
 }
 
 //not sure if I should pass users into function or have it as global varible
@@ -118,10 +131,10 @@ const chosenNames = [];
 list.addEventListener('click', (event) => {
 
 
-    console.log(event.target)
+    //console.log(event.target)
     const target = event.target;
 
-    console.log(target.tagName);
+    //console.log(target.tagName);
     if (target.tagName === 'P' && !target.className){
         target.className = 'red';
         //console.log(target.innerText);
@@ -142,6 +155,110 @@ list.addEventListener('click', (event) => {
 //things are now pushed into an array so now need a way to move them 
 //add a move button?? I guess so maybe just one moves everything to the right or some such
 //honestly it's not quite clear and probably does not matter  
+
+
+
+//so this works just fine. probably better if the listener was one step above so less repeated code
+//but not a big deal can just be repeated for four more buttons  
+
+buttonOneRight.addEventListener("click", function(event){
+    console.log('button two here!!')
+
+    users.forEach(function(element) {
+        //console.log(element['name']);
+        if (chosenNames.includes(element['name']) && element['slot'] === 'first'){
+            element['slot'] = 'second';
+            console.log(element['name'])
+            console.log(element['slot'])
+            console.log(users);
+            removeNames();
+            addNames(users);
+            chosenNames = [];
+            }
+        });
+
+
+} )
+
+buttonOneLeft.addEventListener("click", function(event){
+    console.log('button two here!!')
+
+    users.forEach(function(element) {
+        //console.log(element['name']);
+        if (chosenNames.includes(element['name']) && element['slot'] === 'first'){
+            element['slot'] = 'third';
+            removeNames();
+            addNames(users);
+            chosenNames = [];
+            }
+        });
+
+
+} )
+
+
+
+
+
+buttonTwoRight.addEventListener("click", function(event){
+    console.log('button two here!!')
+
+    users.forEach(function(element) {
+        //console.log(element['name']);
+        if (chosenNames.includes(element['name']) && element['slot'] === 'second'){
+            element['slot'] = 'third';
+            console.log(element['name'])
+            console.log(element['slot'])
+            console.log(users);
+            removeNames();
+            addNames(users);
+            chosenNames = [];
+            }
+        });
+
+
+} )
+
+buttonTwoLeft.addEventListener("click", function(event){
+    console.log('button two here!!')
+
+    users.forEach(function(element) {
+        //console.log(element['name']);
+        if (chosenNames.includes(element['name']) && element['slot'] === 'second'){
+            element['slot'] = 'first';
+            removeNames();
+            addNames(users);
+            chosenNames = [];
+            }
+        });
+
+
+} )
+
+buttonThreeRight.addEventListener("click", function(event){
+    users.forEach(function(element) {
+        //console.log(element['name']);
+        if (chosenNames.includes(element['name']) && element['slot'] === 'third'){
+            element['slot'] = 'first';
+            removeNames();
+            addNames(users);
+            chosenNames = [];
+            }
+        });
+} )
+
+buttonThreeLeft.addEventListener("click", function(event){
+    users.forEach(function(element) {
+        if (chosenNames.includes(element['name']) && element['slot'] === 'third'){
+            element['slot'] = 'second';
+            removeNames();
+            addNames(users);
+            chosenNames = [];
+            }
+        });
+
+
+} )
 
 
 </script>
