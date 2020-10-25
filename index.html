@@ -3,21 +3,34 @@
     <head>
 <style>
 
+body {
+
+    max-width: 1200px;
+    margin: auto;
+}
+
 #lists{
     display: flex;
 }
 
 div div{
     
-    /* height: 100px; */
+    height: 400px;
     /* width: 100px; */
     background-color: yellow;
     border-style: solid;
+    flex: 0 0 33%;
 }
 
 .red {
     background-color: red;
 }
+
+h1{
+
+    text-align: center;
+} 
+
 
 </style>
 
@@ -56,10 +69,10 @@ div div{
 //probably start with making boxes and go from there, just hard coded it... it works, probably better to put in here but that is ok 
 
     const users = [
-        {id: 1, name: 'moe', slot: 'first'},
-        {id: 2, name: 'larry', slot: 'second'},
-        {id: 3, name: 'curly', slot: 'third'},
-        {id: 4, name: 'lucy', slot: 'third', selected: true},
+        {id: 1, name: 'moe', slot: 'first', selected: false},
+        {id: 2, name: 'larry', slot: 'second', selected: false},
+        {id: 3, name: 'curly', slot: 'third', selected: false},
+        {id: 4, name: 'lucy', slot: 'third', selected: false},
     ]
 
 //seems like I should use this but not entirely sure how yet 
@@ -85,27 +98,32 @@ function addNames(users){
     users.forEach(element => {
 
 //there is definately a better way of doing this but this works 
-        if (element['slot'] === 'first'){
-            const name = document.createElement('p');
+
+const name = document.createElement('p');
             name.innerText = element['name'];
+
+        if (element['slot'] === 'first'){
             first.appendChild(name); 
             //console.log("yes!!")
         }
         
         if (element['slot'] === 'second'){
-            const name = document.createElement('p');
-            name.innerText = element['name'];
+            // const name = document.createElement('p');
+            // name.innerText = element['name'];
             second.appendChild(name); 
             //console.log("yes!!")
         }
 
         if (element['slot'] === 'third'){
-            const name = document.createElement('p');
-            name.innerText = element['name'];
+            // const name = document.createElement('p');
+            // name.innerText = element['name'];
             third.appendChild(name); 
             //console.log("yes!!")
         }
 
+        if(element['selected']){
+            name.className = 'red';
+        }
         //console.log(element['slot']);
         
     });
@@ -113,6 +131,7 @@ function addNames(users){
 }
 
 function removeNames() {
+
 const pTags = list.getElementsByTagName('P');
     console.log([...pTags]);
             [...pTags].forEach(element =>element.remove());
@@ -140,10 +159,22 @@ list.addEventListener('click', (event) => {
         //console.log(target.innerText);
         chosenNames.push(target.innerText);
         console.log(chosenNames);
+        //check array to see name has selected tag
+        users.forEach(function(element) {if (element['name'] === target.innerText)
+        {
+            element['selected'] = !element['selected']
+            console.log(users);
+        }})
+    
     } else if (target.tagName === 'P' && target.className){
         target.className = '';
         chosenNames.splice(chosenNames.indexOf(target.innerText), 1);
         console.log(chosenNames);
+        users.forEach(function(element) {if (element['name'] === target.innerText)
+        {
+            element['selected'] = !element['selected']
+            console.log(users);
+        }})
 
     }
 
@@ -158,7 +189,9 @@ list.addEventListener('click', (event) => {
 
 
 
-//so this works just fine. probably better if the listener was one step above so less repeated code
+//this works much better than i expected. I mean it's brute force but I can hand it in 
+//should be gone through to make it less crazy also does not work perfectly 
+// . probably better if the listener was one step above so less repeated code
 //but not a big deal can just be repeated for four more buttons  
 
 buttonOneRight.addEventListener("click", function(event){
@@ -166,14 +199,14 @@ buttonOneRight.addEventListener("click", function(event){
 
     users.forEach(function(element) {
         //console.log(element['name']);
-        if (chosenNames.includes(element['name']) && element['slot'] === 'first'){
+        if (element['selected'] && element['slot'] === 'first'){
             element['slot'] = 'second';
             console.log(element['name'])
             console.log(element['slot'])
             console.log(users);
             removeNames();
             addNames(users);
-            chosenNames = [];
+            //chosenNames = [];
             }
         });
 
@@ -185,11 +218,13 @@ buttonOneLeft.addEventListener("click", function(event){
 
     users.forEach(function(element) {
         //console.log(element['name']);
-        if (chosenNames.includes(element['name']) && element['slot'] === 'first'){
+        if (element['selected']  && element['slot'] === 'first'){
             element['slot'] = 'third';
             removeNames();
             addNames(users);
-            chosenNames = [];
+            //chosenNames = [];
+
+      
             }
         });
 
@@ -205,14 +240,14 @@ buttonTwoRight.addEventListener("click", function(event){
 
     users.forEach(function(element) {
         //console.log(element['name']);
-        if (chosenNames.includes(element['name']) && element['slot'] === 'second'){
+        if (element['selected']  && element['slot'] === 'second'){
             element['slot'] = 'third';
             console.log(element['name'])
             console.log(element['slot'])
             console.log(users);
             removeNames();
             addNames(users);
-            chosenNames = [];
+            //chosenNames = [];
             }
         });
 
@@ -224,11 +259,11 @@ buttonTwoLeft.addEventListener("click", function(event){
 
     users.forEach(function(element) {
         //console.log(element['name']);
-        if (chosenNames.includes(element['name']) && element['slot'] === 'second'){
+        if (element['selected']  && element['slot'] === 'second'){
             element['slot'] = 'first';
             removeNames();
             addNames(users);
-            chosenNames = [];
+            //chosenNames = [];
             }
         });
 
@@ -238,27 +273,30 @@ buttonTwoLeft.addEventListener("click", function(event){
 buttonThreeRight.addEventListener("click", function(event){
     users.forEach(function(element) {
         //console.log(element['name']);
-        if (chosenNames.includes(element['name']) && element['slot'] === 'third'){
+        if (element['selected']  && element['slot'] === 'third'){
             element['slot'] = 'first';
             removeNames();
             addNames(users);
-            chosenNames = [];
+            //chosenNames = [];
             }
         });
 } )
 
 buttonThreeLeft.addEventListener("click", function(event){
     users.forEach(function(element) {
-        if (chosenNames.includes(element['name']) && element['slot'] === 'third'){
+        if (element['selected']  && element['slot'] === 'third'){
             element['slot'] = 'second';
             removeNames();
             addNames(users);
-            chosenNames = [];
+            //chosenNames = [];
             }
         });
 
 
 } )
+
+
+
 
 
 </script>
